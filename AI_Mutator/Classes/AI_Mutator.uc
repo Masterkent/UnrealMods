@@ -1,7 +1,7 @@
 class AI_Mutator expands Mutator;
 
-var() transient const string VersionInfo;
-var() transient const string Version;
+var() const string VersionInfo;
+var() const string Version;
 
 var transient float SlowTimerSeconds;
 var transient float FastTimerSeconds;
@@ -770,6 +770,6 @@ function string GetHumanName()
 
 defaultproperties
 {
-	VersionInfo="AI_Mutator v2.0 [2023-06-13]"
+	VersionInfo="AI_Mutator v2.0 [2023-06-19]"
 	Version="2.0"
 }

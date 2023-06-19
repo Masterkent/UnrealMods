@@ -1,13 +1,13 @@
 //=============================================================================
 // UMapMod v9.4                                              Author: Masterkent
-//                                                             Date: 2023-06-17
+//                                                             Date: 2023-06-19
 //=============================================================================
 
 class UMapMod expands Mutator
 	config(UMapModOptions);
 
-var() transient const string VersionInfo;
-var() transient const string Version;
+var() const string VersionInfo;
+var() const string Version;
 
 var() config array<string> ModOptions;
 var int ModOptionCount;
@@ -1654,6 +1654,6 @@ defaultproperties
 	UMapChangesClass=Class'UMapMod.UMapChanges'
 	UMapGroupClass=Class'UMapMod.UMapGroup'
 	UMapModInfoClass=Class'UMapMod.UMapModInfo'
-	VersionInfo="UMapMod v9.4 [2023-06-17]"
+	VersionInfo="UMapMod v9.4 [2023-06-19]"
 	Version="9.4"
 }
