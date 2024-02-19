@@ -99,7 +99,9 @@ function Update_Queen(Queen Creature)
 	foreach AllActors(class'QueenDest', Dest)
 	{
 		HitActor = Trace(HitLocation, HitNormal, Creature.Enemy.Location, Dest.Location, false);
-		if (HitActor == none && VSize(Creature.Enemy.Location - Dest.Location) < BestDist)
+		if (HitActor == none &&
+			VSize(Creature.Enemy.Location - Dest.Location) < BestDist &&
+			VSize(Creature.Enemy.Location - Dest.Location) > Creature.CollisionRadius + Creature.Enemy.CollisionRadius)
 		{
 			BestDist = VSize(Creature.Enemy.Location - Dest.Location);
 			Creature.TelepDest = Dest.Location;
@@ -123,11 +125,6 @@ function Update_Queen(Queen Creature)
 	{
 		Creature.GotoState('Charging');
 	}
-
-	if (Creature.AnimSequence == 'Shield' && Creature.bLeadTarget)
-		Creature.GotoState('Charging');
-	else if (Creature.AnimSequence != 'Shield')
-		Creature.bLeadTarget = true;
 }
 
 function Update_Skaarj(Skaarj Creature)
@@ -396,19 +393,11 @@ function Mercenary_TryToDuckEx(
 function Queen_TryToDuckEx(
 	Queen Creature, vector DuckDir, bool bReversed, Projectile Proj, float HitTime, float HitDist)
 {
-	if (Creature.Health <= 2000 || ProjectileGroupDamage(Proj) <= 220 || !Creature.bCanDuck)
+	if (!Creature.bCanDuck || ProjectileGroupDamage(Proj) <= 220)
 		return;
 
-	if (!Creature.IsInState('Teleporting') && Creature.AnimSequence != 'Shield' && Creature.bLeadTarget)
-	{
-		if (FRand() >= 0.1 || !Creature.bCanDuck)
-			Creature.GotoState('Teleporting');
-		else
-		{
-			Creature.bLeadTarget = false;
-			Creature.TryToDuck(DuckDir, bReversed);
-		}
-	}
+	if (!Creature.IsInState('Teleporting') && !Creature.IsInState('Charging') && Creature.AnimSequence != 'Shield' && Creature.bCanTeleport)
+		Creature.GotoState('Teleporting');
 }
 
 function SkaarjTrooper_TryToDuckEx(
@@ -765,11 +754,11 @@ function int ProjectileGroupDamage(Projectile Proj)
 
 function string GetHumanName()
 {
-	return "AI_Mutator v2.0";
+	return "AI_Mutator v2.1";
 }
 
 defaultproperties
 {
-	VersionInfo="AI_Mutator v2.0 [2023-06-19]"
-	Version="2.0"
+	VersionInfo="AI_Mutator v2.1 [2024-02-19]"
+	Version="2.1"
 }
